@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+		.box{
+				width: 1200px;
+				height: 397px;
+				border: 1px solid red;
+				margin: 100px auto;
+				position: relative;
+				overflow: hidden;
+			}
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			ul,li{
+				list-style: none;
+			}
+			div{
+				display: block;
+			}
+			#left{
+				left: 30px;
+			}
+				
+			#right{
+				right: 40px;
+			}
+			#t1{
+				height: 17px;
+				font-size: 13px;
+				color: red;
+				background: #C0C0C0;
+			}
+			#t2{
+				margin-left: 360px;
+				float: left;
+				 text-align: center;
+			}
+			.nav{
+				position: absolute;
+				left: 500px;
+				bottom: 20px;
+			}
+			.nav>li{
+				float:left;
+				width: 20px;
+				height: 20px;
+				background: #ccc;
+				cursor: pointer;
+				margin: 0 10px;
+				border-radius: 50%;
+				float: left;
+			}
+			.nav .active{
+				background:#FF0000;			
+			}
+			.slide{
+				width: 1200px;
+	 			overflow: hidden;
+				float: left;
+			}
+			.slider{
+				width:8450px;
+				position: absolute;
+				left: -1200px;
+			}
+			.box>span{
+				display: block;
+				width: 30px;
+				height: 50px;
+				text-align: center;
+				cursor: pointer;
+				top: 175px;
+				line-height: 50px;
+				background: rgb(255,0,0);
+				font-size: 30px;
+				position: absolute;
+				opacity: 0;
+			}
+			marquee{
+			   width:800px;
+			   text-align: center;
+			      }
+		</style>
+		<script src="animate.js"></script>
+	<body>
+		<div id="t1"><img src="imgs/a15.png"  id="t2"><div><marquee scrollamount="10" >[温馨提示]！最近有不少不法分子在网上骗人，请大家注意!!! </marquee></div></div>
+			<div class="box" id="box">
+				<div class="slider" id="slider">
+					<div class="slide"><img src="imgs/b5.png"  style="width: 1200px;height:400px;" alt=""></div>
+					<div class="slide"><img src="imgs/b1.png" style="width: 1200px;height:400px;" alt=""></div>
+					<div class="slide"><img src="imgs/b2.png" style="width: 1200px;height:400px;" alt=""></div>
+					<div class="slide"><img src="imgs/b3.png" style="width: 1200px;height:400px;" alt=""></div>
+					<div class="slide"><img src="imgs/b4.png" style="width: 1200px;height:400px;" alt=""></div>
+					<div class="slide"><img src="imgs/b5.png" style="width: 1200px;height:400px;"alt=""></div>
+					<div class="slide"><img src="imgs/b1.png" style="width: 1200px;height:400px;" alt=""></div>
+				</div>
+				<span id="left"> < </span>
+				<span id="right"> > </span>
+				<ul class="nav" id="nav">
+					<li class="active"></li>
+					<li></li>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul>
+			</div>
+		<script type="text/javascript">
+			var box = document.getElementById("box");
+			var oNavlist = document.getElementById("nav").children;
+			var silder = document.getElementById("slider");
+			var left=document.getElementById("left");
+			var right=document.getElementById("right");
+			var index=1;
+			var timer;
+			var isMoving=false;
+			function next(){
+					if(! isMoving){
+						isMoving=true;
+						index++;
+						navChange();
+						animate(slider,{left:-1200*index},function(){
+							if(index >5){
+								slider.style.left="-1200px";
+								index=1;
+							}
+							isMoving=false;
+						});
+					}
+					
+					
+				}
+			function prev(){
+				if(! isMoving){
+				isMoving=true;
+				index--;
+				navChange()
+				animate(slider,{left:-1200*index},function(){
+					if(index === 0){
+						slider.style.left="-6000px";
+						index=5;
+					}
+					isMoving=false;
+				});
+			}
+			}
+			var timer= setInterval(next,3000);
+			box.onmouseover=function(){
+				animate(left,{opacity:50})
+				animate(right,{opacity:50})
+				clearInterval(timer);
+			}
+			box.onmouseout=function(){
+				animate(left,{opacity:0})
+				animate(right,{opacity:0})
+				timer=setInterval(next,3000);
+			}
+			right.onclick=next;
+			left.onclick=prev;
+			for (var i = 0; i < oNavlist.length; i++) {
+				oNavlist[i].idx=i;
+				oNavlist[i].onclick=function(){
+					console.log(this.idx);
+					index=this.idx+1;
+					navChange();
+					animate(slider,{left:-1200*index});
+				}
+			}
+			function navChange(){
+				for (var i = 0; i < oNavlist.length; i++){
+					oNavlist[i].className="";
+				}
+				if(index>5){
+					oNavlist[0].className="active";
+					
+				}
+				else if(index===0){
+					oNavlist[4].className="active";
+					
+					
+				}
+				else{
+				oNavlist[index-1].className="active";
+				}
+				
+			}
+			
+		</script>
+	</body>
+</html>
